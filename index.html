@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MOS Project 401 · Mechanics of Solids</title>
+<meta name="description" content="MOS Project 401 is an interactive Mechanics of Solids learning project for course ME2110, featuring a 3D stress cube, traction explorer, Mohr's circle and ten lecture guides.">
+<meta name="theme-color" content="#17232F">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+:root{--bg:#F3F5F7;--s:#fff;--s2:#E9EDF1;--sb:#17232F;--t:#202B36;--m:#657381;--bd:#D7DEE5;--a:#356F9F;--n:#E15B50;--sh:#21A6AE;--vp:#16202B;--mono:'IBM Plex Mono',Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--t);font:13px/1.5 Inter,system-ui,sans-serif;display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}
+aside{background:var(--sb);color:#B9C6D2;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;padding:12px 8px;z-index:20}
+.brand{display:flex;gap:9px;align-items:center;padding:2px 6px 12px;border-bottom:1px solid #2B3B4A;margin-bottom:6px}
+.brand b{display:block;color:#fff;font-weight:600;letter-spacing:.08em;font-size:13px}.brand small{font-size:11px;color:#7F92A3}
+.ng{font-size:11px;color:#6E8194;padding:10px 8px 3px}
+aside button{display:flex;align-items:center;width:100%;background:none;border:0;border-left:2px solid transparent;color:inherit;font:inherit;font-size:12.5px;padding:4px 8px;text-align:left;cursor:pointer;border-radius:0 3px 3px 0}
+aside button:hover{background:#1F2E3C;color:#fff}aside button.on{background:#223647;color:#fff;border-left-color:#6FA8D6}
+aside button em{font:normal 11px var(--mono);color:#6E8194;width:22px}aside button .dt{margin-left:auto;width:7px;height:7px;border:1px solid #6E8194;border-radius:50%}aside button .dt.y{background:#5FB88A;border-color:#5FB88A}
+.ic{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;margin-right:8px;flex:none}
+.foot{margin-top:auto;border-top:1px solid #2B3B4A;padding-top:6px}
+:focus-visible{outline:2px solid #6FA8D6;outline-offset:1px}
+.wrap{min-width:0}
+header{position:sticky;top:0;z-index:10;height:44px;background:var(--s);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;padding:0 16px}
+#bc{color:var(--m);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#bc b{color:var(--t);font-weight:600}
+#mb{display:none}
+.sp{flex:1}
+.b{background:var(--s);color:var(--t);border:1px solid var(--bd);border-radius:3px;padding:3px 10px;font:inherit;font-size:12px;cursor:pointer;transition:border-color .15s,background .15s}
+.b:hover{border-color:var(--a);background:#F3F8FC}.b.p{background:var(--a);border-color:var(--a);color:#fff}.b.p:hover{background:#2B5C85}
+.seg{display:inline-flex}.seg button{border-radius:0;margin-left:-1px}.seg button:first-child{border-radius:3px 0 0 3px;margin:0}.seg button:last-child{border-radius:0 3px 3px 0}.seg button.on{background:var(--a);color:#fff;border-color:var(--a);position:relative}
+#st{font:11px var(--mono);color:var(--m);white-space:nowrap}#st:before{content:"";display:inline-block;width:7px;height:7px;background:#3FA66E;border-radius:50%;margin-right:6px}
+main{padding:14px 16px 28px;max-width:1500px}
+section{display:none}section.on{display:block}
+.hd{margin-bottom:10px}.hd small{color:var(--m);font-size:12px}.hd h1{margin:0;font-size:19px;font-weight:600;letter-spacing:-.01em}.hd p{margin:2px 0 0;color:var(--m);max-width:880px}
+.note{display:none;background:#EAF2F8;border:1px solid #BCD2E3;border-left:3px solid var(--a);padding:6px 10px;margin-bottom:10px;font-size:12.5px;border-radius:3px}
+[data-mode=guided] .gd,[data-mode=challenge] .ch{display:block}.ans{margin-top:4px;color:var(--m)}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:12px;align-items:start}
+.side,.col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.pn{background:var(--s);border:1px solid var(--bd);border-radius:4px;min-width:0}
+.pn h3{margin:0;padding:6px 12px;font-size:12px;font-weight:600;color:var(--m);background:var(--s2);border-bottom:1px solid var(--bd);border-radius:4px 4px 0 0}
+.pb{padding:10px 12px}.pb p{margin:0 0 6px}
+.eqs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px;margin-top:12px}
+.eq{background:#F7F9FB;border-left:3px solid var(--a);padding:6px 12px;margin:6px 12px;overflow-x:auto;font-size:15px}.pb .eq{margin:6px 0}
+.fl{animation:fl .8s ease-out}@keyframes fl{from{background:#FFE7A3}}
+.vp{position:relative;background:var(--vp);border:1px solid #0D151D;border-radius:4px;overflow:hidden}
+canvas{display:block;width:100%;height:clamp(400px,64vh,660px);cursor:grab;touch-action:none}
+.tb{position:absolute;top:8px;left:8px;display:flex;gap:2px;flex-wrap:wrap;max-width:calc(100% - 130px)}
+.tb button{background:#1F2D3A;color:#CBD6E0;border:1px solid #34475A;border-radius:3px;font:11px Inter;padding:3px 8px;cursor:pointer}.tb button:hover{border-color:#6FA8D6;color:#fff}
+.vl{position:absolute;top:10px;right:10px;font:11px var(--mono);color:#7F92A3;text-align:right}
+.lg{position:absolute;right:10px;bottom:8px;display:flex;flex-direction:column;gap:3px;font-size:11px;color:#B9C6D2;background:#16202BD9;padding:6px 8px;border:1px solid #2B3B4A;border-radius:3px}
+.sw{display:inline-block;width:20px;margin-right:7px;vertical-align:middle}
+.r{display:flex;align-items:baseline;gap:6px;padding:3px 12px;border-bottom:1px solid var(--bd);font-size:12px}.r:last-child{border:0}
+.r span{flex:1;color:var(--m)}.r b{font:500 12px var(--mono);padding:0 3px}.r i{font-style:normal;color:var(--m);width:30px;font-size:11px}
+select,input[type=number]{background:#fff;border:1px solid #B7C3CF;border-radius:3px;font:12px var(--mono);padding:4px 6px;color:var(--t)}
+select{width:100%;font-family:Inter}input:focus,select:focus{outline:2px solid var(--a);outline-offset:-1px}
+input[type=range]{width:100%;accent-color:var(--a)}
+.me{border-collapse:collapse;margin:0 auto}.me td{padding:2px}.me input{width:74px;text-align:right}.me input[readonly]{background:var(--s2);color:var(--m);border-color:var(--bd);cursor:default}
+.me:before{content:""}
+.mx{border-left:2px solid var(--t);border-right:2px solid var(--t);border-radius:3px;margin:4px auto;font:12px var(--mono)}.mx td{padding:1px 9px;text-align:right}
+.rg{display:flex;justify-content:space-between;color:var(--m);font:10.5px var(--mono)}
+label{display:block;color:var(--t);margin:3px 0}label.i{display:inline-block;margin-right:8px}
+.d{color:var(--m);font-size:12px;margin:6px 0 0}
+details summary{cursor:pointer;color:var(--a);padding:2px 0}
+.cmp{display:flex;gap:16px;flex-wrap:wrap}.cmp small{color:var(--m);display:block}
+.ok{color:#2E8B57}.val{font:12px/1.8 var(--mono)}
+.mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}.mg button{display:flex;gap:8px;align-items:center;border:0;border-bottom:1px solid var(--bd);border-right:1px solid var(--bd);background:#fff;padding:7px 10px;font:inherit;text-align:left;cursor:pointer}.mg button:hover{background:#F3F8FC}.mg em{font:normal 11px var(--mono);color:var(--m)}
+.bar{height:6px;background:var(--s2);border-radius:2px;margin:6px 0}.bar i{display:block;height:100%;background:var(--a);border-radius:2px;transition:width .3s}
+svg text{fill:#202B36;font:11px Inter}
+#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#17232F;color:#fff;padding:7px 12px;border-radius:3px;font-size:12px;display:none;z-index:50}#toast button{margin-left:10px;background:none;border:0;color:#8CC3EE;cursor:pointer;font:inherit}
+
+/* ---------- PROJECT / ABOUT ---------- */
+.about-hero{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:20px;align-items:center;background:#fff;border:1px solid var(--bd);border-left:4px solid var(--a);padding:20px;margin-bottom:12px}
+.about-hero .kicker{font:11px var(--mono);letter-spacing:.08em;color:var(--a)}
+.about-hero h2{font-size:23px;line-height:1.25;margin:7px 0 8px;letter-spacing:-.02em}
+.about-hero p{max-width:760px;color:var(--m);margin:0}
+.about-stamp{justify-self:center;width:142px;height:142px;border:1px solid #B8C9D8;display:grid;place-items:center;background:linear-gradient(135deg,#F7FAFC,#E7EFF5);color:var(--a);text-align:center}
+.about-stamp strong{display:block;font:500 25px var(--mono)}.about-stamp span{display:block;font-size:10px;letter-spacing:.12em}
+.about-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+.about-list{margin:0;padding-left:18px;color:var(--m)}.about-list li{margin:4px 0}
+.team-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.team-person{display:flex;gap:10px;align-items:center;border:1px solid var(--bd);padding:10px;background:#FBFCFD;min-width:0}
+.team-initial{width:38px;height:38px;display:grid;place-items:center;background:#E5EFF7;color:var(--a);font:500 13px var(--mono);flex:none}
+.team-person b{display:block;font-size:13px}.team-person small{display:block;color:var(--m);font-size:11px}
+.tech-tags{display:flex;flex-wrap:wrap;gap:6px}.tech-tags span{padding:4px 8px;background:#EDF3F8;border:1px solid #D5E2ED;color:#365B78;font-size:11px}
+.about-note{font-size:11px;color:var(--m);margin-top:8px}
+.dash-credit{font-size:11px;color:var(--m);margin-top:5px!important}.dash-credit strong{color:var(--t);font-weight:600}
+.project-footer{border-top:1px solid var(--bd);margin-top:18px;padding-top:10px;color:var(--m);font-size:11px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media(max-width:700px){.about-hero{grid-template-columns:1fr}.about-stamp{display:none}.about-grid{grid-template-columns:1fr}.team-grid{grid-template-columns:1fr}.project-footer{display:block}}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(max-width:980px){body{grid-template-columns:1fr}aside{position:fixed;width:244px;transform:translateX(-100%);transition:transform .2s}body.no aside{transform:none}#mb{display:inline-flex}.lab{grid-template-columns:1fr}#st{display:none}canvas{height:clamp(320px,55vh,520px)}}
+</style></head>
+<body data-mode="explore">
+<aside id="sb"><div class="brand"><svg width="28" height="28" viewBox="0 0 28 28"><rect x="2" y="2" width="24" height="24" rx="2" fill="none" stroke="#6FA8D6" stroke-width="1.5"/><path d="M5 14h18M14 5v18" stroke="#6FA8D6" stroke-width=".8"/><circle cx="14" cy="14" r="6" fill="none" stroke="#6FA8D6"/><circle cx="20" cy="14" r="1.6" fill="#E15B50"/></svg><div><b>MOS PROJECT 401</b><small>ME2110 · Mechanics of Solids</small></div></div>
+<div id="nav"></div>
+<div class="foot"><button id="help"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zM9.5 9.5a2.5 2.5 0 114 2c-1 .7-1.5 1-1.5 2M12 17v.01"/></svg>Help</button><button id="set"><svg class="ic" viewBox="0 0 24 24"><path d="M12 9a3 3 0 100 6 3 3 0 000-6zM4 12h2M18 12h2M12 4v2M12 18v2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4"/></svg><span id="sett">Settings · auto-rotate off</span></button></div></aside>
+<div class="wrap">
+<header><button class="b" id="mb" aria-label="Menu">Menu</button><div id="bc"></div><div class="sp"></div>
+<div class="seg" id="seg" title="Learning mode"><button class="b on" data-m="explore" title="Free manipulation">Explore</button><button class="b" data-m="guided" title="Step-by-step prompts">Guided</button><button class="b" data-m="challenge" title="Predict, then experiment">Challenge</button></div>
+<button class="b" id="reset" title="Restore default stress state and view">Reset experiment</button><div id="st"></div></header>
+<main>
+<section id="dash" class="on"></section>
+
+<section id="cube"><div class="hd"><small>Virtual lab · Lecture 3</small><h1>Stress tensor: 3D stress cube</h1><p>Edit the six independent components; the matrix stays symmetric. Tensile stress is positive, so outward arrows mean tension.</p></div>
+<div class="note gd"></div><div class="note ch"></div>
+<div class="lab"><div class="vp"><canvas id="cv1" aria-label="3D stress cube"></canvas><div class="tb" data-v="c"></div><div class="vl">PERSPECTIVE<br>drag rotate · shift+drag pan · wheel zoom</div>
+<div class="lg"><span><i class="sw" style="border-top:4px solid #E15B50"></i>Normal σᵢᵢ (wide head)</span><span><i class="sw" style="border-top:2px solid #21A6AE"></i>Shear σᵢⱼ (narrow head)</span><span><i class="sw" style="border-top:2px solid #f2b84b"></i>Principal axis nᵢ</span></div></div>
+<div class="side"><div class="pn"><h3>Stress state</h3><div class="pb"><select id="csel" title="Load a preset stress state"></select><p class="d" id="cdesc"></p></div></div>
+<div class="pn"><h3>Stress matrix σ (MPa)</h3><div class="pb"><table class="me" id="cin"></table><p class="d">Shaded cells mirror their partner: σij = σji.</p></div></div>
+<div class="pn"><h3>Display</h3><div class="pb"><label class="i"><input type="checkbox" id="tn" checked> Normal</label><label class="i"><input type="checkbox" id="ts" checked> Shear</label><label class="i"><input type="checkbox" id="tpa"> Principal axes</label></div></div>
+<div class="pn"><h3>Readouts</h3><div id="cro"></div></div></div></div>
+<div class="eqs"><div class="pn"><h3>Current stress matrix</h3><div class="eq" id="ceq1"></div></div><div class="pn"><h3>Mean stress and von Mises</h3><div class="eq" id="ceq2"></div></div>
+<div class="pn"><h3>Meaning</h3><div class="pb">With <b>t = σn</b>, row <b>i</b> gives the force direction and column <b>j</b> corresponds to the plane-normal direction. Diagonal terms are normal stresses; off-diagonal terms are shear stresses. Highlighted values changed on the last edit.</div></div></div></section>
+
+<section id="trac"><div class="hd"><small>Virtual lab · Lecture 2</small><h1>Traction vector explorer</h1><p>Uses the stress matrix from the cube page. The internal plane has unit normal n(θ, φ).</p></div>
+<div class="note gd"></div><div class="note ch"></div>
+<div class="lab"><div class="vp"><canvas id="cv2" aria-label="Traction explorer"></canvas><div class="tb" data-v="t"></div><div class="vl">PERSPECTIVE<br>drag rotate · shift+drag pan · wheel zoom</div>
+<div class="lg"><span><i class="sw" style="border-top:3px solid #fff"></i>n unit normal</span><span><i class="sw" style="border-top:3px solid #f2b84b"></i>t = σn traction</span><span><i class="sw" style="border-top:4px solid #E15B50"></i>σₙn normal part</span><span><i class="sw" style="border-top:2px solid #21A6AE"></i>tₛ shear part</span></div></div>
+<div class="side"><div class="pn"><h3>Plane orientation</h3><div class="pb"><label>Polar angle θ <b id="thv" style="font-family:var(--mono)"></b>°</label><input type="range" id="th" min="0" max="180" value="55"><div class="rg"><span>0°</span><span>180°</span></div><label>Azimuth φ <b id="phv" style="font-family:var(--mono)"></b>°</label><input type="range" id="ph" min="0" max="360" value="40"><div class="rg"><span>0°</span><span>360°</span></div><div id="tpre" style="margin-top:6px"></div></div></div>
+<div class="pn"><h3>Traction readouts</h3><div id="tout"></div></div></div></div>
+<div class="eqs"><div class="pn"><h3>Decomposition (live)</h3><div class="eq" id="teq"></div></div>
+<div class="pn"><h3>Formulas</h3><div class="pb"><details open><summary>Cauchy's formula</summary><div class="eq" data-t="\mathbf t=\sigma\,\mathbf n"></div><p class="d">Traction on a plane = stress matrix × unit normal.</p></details><details><summary>Normal and shear parts</summary><div class="eq" data-t="\sigma_n=\mathbf t\cdot\mathbf n,\quad \mathbf t_s=\mathbf t-\sigma_n\mathbf n,\quad \tau=\lVert\mathbf t_s\rVert"></div><p class="d">Project t on n for the normal part; the remainder lies in the plane.</p></details></div></div></div></section>
+
+<section id="mohr"><div class="hd"><small>Virtual lab · Lecture 9</small><h1>Mohr's circle</h1><p>Tensile σ positive; τ plotted downward so a counter-clockwise physical rotation θ is a counter-clockwise 2θ on the circle. τxy is the matrix entry σxy.</p></div>
+<div class="note gd"></div><div class="note ch"></div>
+<div class="lab"><div class="pn"><h3>σ–τ plane (MPa)</h3><div class="pb"><svg id="msvg" viewBox="0 0 400 300" width="100%" style="display:block;max-height:72vh"></svg></div></div>
+<div class="side"><div class="pn"><h3>Stress state (MPa)</h3><div class="pb"><label class="i">σx <input type="number" id="msx" step="10" style="width:70px"></label><label class="i">σy <input type="number" id="msy" step="10" style="width:70px"></label><label class="i">τxy <input type="number" id="mt" step="10" style="width:70px"></label><button class="b" id="msync" title="Copy σxx, σyy, σxy from the cube">Load from cube</button>
+<label style="margin-top:8px">Plane rotation θ <b id="mthv" style="font-family:var(--mono)"></b>°</label><input type="range" id="mth" min="-90" max="90" value="0"><div class="rg"><span>−90°</span><span>90°</span></div></div></div>
+<div class="pn"><h3>Readouts</h3><div id="mout"></div></div></div></div>
+<div class="eqs"><div class="pn"><h3>Rotated components (live)</h3><div class="eq" id="meq"></div></div>
+<div class="pn"><h3>Double-angle relationship</h3><div class="pb"><p id="mexp"></p><details><summary>Show relations</summary><div class="eq" data-t="\sigma_{x'}=c+a\cos2\theta+\tau_{xy}\sin2\theta"></div><div class="eq" data-t="\tau_{x'y'}=-a\sin2\theta+\tau_{xy}\cos2\theta"></div><p class="d">c = (σx+σy)/2, a = (σx−σy)/2. This is a rotation of the vector (a, τxy) by 2θ, hence a circle.</p></details></div></div></div></section>
+
+<section id="lec"><div class="hd" id="lh"></div><div id="lbody"></div></section>
+
+<section id="about">
+ <div class="hd"><small>Project information · team and scope</small><h1>About MOS Project 401</h1><p>Who built this project, what it covers, and how the interactive learning experience works.</p></div>
+ <div class="about-hero">
+  <div><div class="kicker">MECHANICS OF SOLIDS · INTERACTIVE LEARNING PROJECT</div><h2>Understand mechanics by seeing it, changing it and experimenting.</h2><p>MOS Project 401 is a browser-based learning companion for Mechanics of Solids. It connects course concepts and equations with interactive models. Students can edit a stress state, inspect traction on an inclined plane, explore Mohr's circle and review ten learning modules.</p></div>
+  <div class="about-stamp"><div><strong>MOS</strong><span>PROJECT 401</span></div></div>
+ </div>
+ <div class="about-grid">
+  <div class="pn"><h3>Course details</h3><div class="pb"><div class="cmp"><div><small>Course Title</small><b>Mechanics of Solids</b></div><div><small>Course Code</small><b>ME2110</b></div><div><small>Faculty</small><b>Prakhar Gupta</b></div></div></div></div>
+  <div class="pn"><h3>Project objective</h3><div class="pb"><p>The goal is to make selected Solid Mechanics concepts easier to understand by linking mathematical expressions to visual and numerical experiments.</p><ul class="about-list"><li>Visualize normal and shear stress on a 3D element.</li><li>Explore traction on planes with different orientations.</li><li>Connect physical plane rotation with Mohr's circle.</li><li>Review lecture concepts through explanations and short challenges.</li></ul></div></div>
+  <div class="pn"><h3>Project team</h3><div class="pb"><div class="team-grid"><div class="team-person"><div class="team-initial">AJ</div><div><b>Arnav Jaiswal</b><small>Project team</small></div></div><div class="team-person"><div class="team-initial">A</div><div><b>Arvind</b><small>Project team</small></div></div></div><p class="about-note">Student project contributors.</p></div></div>
+  <div class="pn"><h3>What the website includes</h3><div class="pb"><ul class="about-list"><li><b>3D Stress Cube:</b> edit six independent components of a symmetric stress matrix and inspect the arrows and readouts.</li><li><b>Traction Explorer:</b> change the plane normal and calculate traction, normal stress and shear traction.</li><li><b>Mohr's Circle:</b> explore the 2D stress transformation and double-angle relationship.</li><li><b>Ten learning modules:</b> concept summaries, equations, diagrams and worked examples.</li><li><b>Practice:</b> short numerical challenges with feedback.</li></ul></div></div>
+  <div class="pn"><h3>Topics covered</h3><div class="pb"><div class="cmp"><div><small>Lectures 1–4</small><b>Vectors and tensors · Traction · Stress tensor · Stress transformation</b></div><div><small>Lectures 5–6</small><b>Linear and angular momentum balance</b></div><div><small>Lectures 7–8</small><b>Principal stresses · Maximum shear stress</b></div><div><small>Lectures 9–10</small><b>Mohr's circle · Stress invariants and decomposition</b></div></div></div></div>
+  <div class="pn"><h3>Technologies used</h3><div class="pb"><div class="tech-tags"><span>HTML5</span><span>CSS</span><span>JavaScript</span><span>Three.js</span><span>SVG</span><span>KaTeX</span></div><p class="about-note">The application runs in the browser. Three.js, KaTeX and web fonts are loaded from public CDNs, so an internet connection is required for the complete visual experience.</p></div></div>
+  <div class="pn"><h3>Academic reference</h3><div class="pb"><p>This project is based on the Mechanics of Solids topics selected for this ME2110 project. The ten learning modules organize the concepts covered by this interactive study aid.</p><p class="about-note">MOS Project 401 is a student-developed learning aid. It is not an official course website. Please refer to your course material and instructor for authoritative definitions, sign conventions and assessment requirements.</p></div></div>
+ </div>
+ <div class="project-footer"><span>MOS Project 401 · Interactive Mechanics of Solids Project</span><span>Developed by Arnav Jaiswal and Arvind</span></div>
+</section>
+
+<section id="chal"><div class="hd"><small>Practice</small><h1>Challenge questions</h1><p>Random stress states solved with the same formulas. Score: <b id="sc" style="font-family:var(--mono)">0/0</b></p></div>
+<div class="pn" style="max-width:720px"><h3>Question</h3><div class="pb"><p id="qtxt" style="font-size:14px"></p><input type="number" id="qin" step="any" style="width:120px"> MPa <button class="b p" id="qchk">Check</button> <button class="b" id="qshow">Show solution</button> <button class="b" id="qnew">New question</button><div id="qres" class="val" style="margin-top:8px"></div></div></div></section>
+</main></div>
+<div id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const $=i=>document.getElementById(i),f=x=>(Math.abs(x)<5e-9?0:x).toFixed(2),R2D=180/Math.PI,r=String.raw;
+const DEF={xx:80,yy:-40,zz:20,xy:30,yz:-20,xz:10};let D={...DEF};
+const mat=()=>[[D.xx,D.xy,D.xz],[D.xy,D.yy,D.yz],[D.xz,D.yz,D.zz]];
+const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],norm=a=>Math.hypot(...a),nrm=a=>{const n=norm(a)||1;return a.map(x=>x/n)};
+const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+const mv=(M,v)=>M.map(r=>dot(r,v)),tp=M=>M[0].map((_,j)=>M.map(r=>r[j])),mm=(A,B)=>A.map(r=>tp(B).map(c=>dot(r,c)));
+const tr=M=>M[0][0]+M[1][1]+M[2][2],det=M=>dot(M[0],cross(M[1],M[2]));
+const mtx=M=>'<table class="mx">'+M.map(r=>'<tr>'+r.map(x=>'<td>'+f(x)+'</td>').join('')+'</tr>').join('')+'</table>';
+const perp=v=>{const k=[0,1,2].sort((i,j)=>Math.abs(v[i])-Math.abs(v[j]))[0],e=[0,0,0];e[k]=1;return nrm(cross(v,e))};
+function evec(M,l){const A=M.map((r,i)=>r.map((x,j)=>x-(i==j?l:0)));let b=null,bn=1e-9;[[0,1],[0,2],[1,2]].forEach(([i,j])=>{const c=cross(A[i],A[j]),n=norm(c);if(n>bn){bn=n;b=c}});return b&&nrm(b)}
+function eig(M){const p1=M[0][1]**2+M[0][2]**2+M[1][2]**2,q=tr(M)/3;let l;
+ if(p1<1e-12)l=[M[0][0],M[1][1],M[2][2]].sort((a,b)=>b-a);
+ else{const p2=(M[0][0]-q)**2+(M[1][1]-q)**2+(M[2][2]-q)**2+2*p1,p=Math.sqrt(p2/6),B=M.map((r,i)=>r.map((x,j)=>(x-(i==j?q:0))/p)),r=Math.max(-1,Math.min(1,det(B)/2)),ph=Math.acos(r)/3,e1=q+2*p*Math.cos(ph),e3=q+2*p*Math.cos(ph+2*Math.PI/3);l=[e1,3*q-e1-e3,e3]}
+ let v1=evec(M,l[0]),v3=evec(M,l[2]);
+ if(!v1&&!v3){v1=[1,0,0];v3=[0,1,0]}else if(!v1)v1=perp(v3);else if(!v3)v3=perp(v1);
+ return{l,v1,v3,v2:cross(v3,v1)}}
+/* ---------- UI helpers ---------- */
+const PV={},vec=a=>'('+a.map(f).join(', ')+')';
+function ro(id,rows){const o=PV[id]||[];PV[id]=rows.map(x=>x[1]);$(id).innerHTML=rows.map((x,i)=>`<div class="r"><span>${x[0]}</span><b class="${o[i]!==x[1]?'fl':''}">${x[1]}</b><i>${x[2]||''}</i></div>`).join('')}
+const tx=s=>{try{return katex.renderToString(s,{throwOnError:false})}catch(e){return s}};
+function eqs(id,s){const e=$(id);if(e.dataset.s===s)return;e.dataset.s=s;e.innerHTML=tx(s);e.classList.remove('fl');void e.offsetWidth;e.classList.add('fl')}
+let tt;function toast(m,undo){const t=$('toast');t.textContent=m;if(undo){const b=document.createElement('button');b.textContent='Undo';b.onclick=()=>{undo();t.style.display='none'};t.appendChild(b)}t.style.display='block';clearTimeout(tt);tt=setTimeout(()=>t.style.display='none',4000)}
+let AUTO=false;
+/* ---------- THREE ---------- */
+const V3=(a,b,c)=>new THREE.Vector3(a,b,c);
+function lab(t,col,pos,s=.32){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');x.fillStyle=col;x.font='bold 36px Inter,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(t,32,34);const p=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false}));p.scale.set(s,s,1);p.position.copy(pos);return p}
+function arr(d,o,len,col,hl=.13,hw=.07){if(len<.02)return null;return new THREE.ArrowHelper(d.clone().normalize(),o,len,col,Math.min(hl,len*.45),hw)}
+const HOME=[2.8,-3.3,2.2],AX=[[1,0,0,0xff6b6b,'X'],[0,1,0,0x5fd38d,'Y'],[0,0,1,0x5aa9ff,'Z']];
+function mk(id){if(typeof THREE=='undefined'){$(id).outerHTML='<p style="padding:30px;color:#cfd8e1">Three.js could not load from the CDN – check your internet connection and reload.</p>';return null}
+ const cv=$(id),rn=new THREE.WebGLRenderer({canvas:cv,antialias:true}),sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(40,1,.1,60),g=new THREE.Group(),dyn=new THREE.Group(),gs=new THREE.Scene(),gg=new THREE.Group(),gc=new THREE.PerspectiveCamera(35,1,.1,20);
+ rn.setPixelRatio(Math.min(devicePixelRatio,2));rn.setClearColor(0x16202b);rn.autoClear=false;cam.up.set(0,0,1);gc.up.set(0,0,1);cam.position.set(...HOME);cam.lookAt(0,0,0);sc.add(g);g.add(dyn);gs.add(gg);
+ const gr=new THREE.GridHelper(6,12,0x3a4d60,0x25343f);gr.rotation.x=Math.PI/2;gr.position.z=-.5;sc.add(gr);
+ g.add(new THREE.Mesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshBasicMaterial({color:0x3d6b94,transparent:true,opacity:.16,depthWrite:false})));
+ g.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1,1,1)),new THREE.LineBasicMaterial({color:0x9ec3e0})));
+ AX.forEach(([a,b,c,col,t])=>{const d=V3(a,b,c),o=V3(-.5,-.5,-.5),h='#'+col.toString(16);g.add(new THREE.ArrowHelper(d,o,1.6,col,.1,.05));g.add(lab(t,h,o.clone().add(d.clone().multiplyScalar(1.85))));
+  gg.add(new THREE.ArrowHelper(d,V3(0,0,0),1,col,.28,.14));gg.add(lab(t,h,d.clone().multiplyScalar(1.4),.55))});
+ const v={cv,rn,sc,cam,g,dyn,gs,gg,gc,auto:AUTO,w:0,h:0};let dr=false,lx,ly;
+ v.view=p=>{cam.position.set(...p);cam.lookAt(0,0,0);g.quaternion.identity();g.position.set(0,0,0);v.auto=false};
+ v.reset=()=>{v.view(HOME);v.auto=AUTO};v.zoom=k=>cam.position.setLength(Math.min(14,Math.max(2.5,cam.position.length()*k)));
+ cv.onwheel=e=>{e.preventDefault();v.zoom(e.deltaY>0?1.1:.9)};
+ cv.onpointerdown=e=>{dr=true;v.auto=false;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId);cv.style.cursor='grabbing'};
+ cv.onpointerup=()=>{dr=false;cv.style.cursor='grab'};
+ cv.onpointermove=e=>{if(!dr)return;const dx=e.clientX-lx,dy=e.clientY-ly;
+  if(e.shiftKey){const m=cam.matrixWorld.elements;g.position.addScaledVector(V3(m[0],m[1],m[2]),dx*.006).addScaledVector(V3(m[4],m[5],m[6]),-dy*.006)}
+  else{g.quaternion.premultiply(new THREE.Quaternion().setFromAxisAngle(V3(0,0,1),dx*.01)).premultiply(new THREE.Quaternion().setFromAxisAngle(V3(1,0,0),dy*.01))}lx=e.clientX;ly=e.clientY};
+ v.clear=()=>{while(dyn.children.length)dyn.remove(dyn.children[0])};v.add=o=>o&&dyn.add(o);return v}
+let vc,vt;
+const TB='<button data-a="iso" title="Isometric view">Iso</button><button data-a="f" title="Front view (−Y)">Front</button><button data-a="rt" title="Right view (+X)">Right</button><button data-a="top" title="Top view (+Z)">Top</button><button data-a="zo" title="Zoom out">−</button><button data-a="zi" title="Zoom in">+</button><button data-a="rs" title="Reset camera and rotation">Reset</button><button data-a="sp" title="Toggle auto-rotate">Spin</button>';
+document.querySelectorAll('.tb').forEach(t=>{t.innerHTML=TB;t.onclick=e=>{const b=e.target.closest('button'),v=t.dataset.v=='c'?vc:vt;if(!b||!v)return;const a=b.dataset.a;
+ if(a=='iso')v.view(HOME);else if(a=='f')v.view([0,-5,0]);else if(a=='rt')v.view([5,0,0]);else if(a=='top')v.view([0,-.01,5]);else if(a=='zo')v.zoom(1.2);else if(a=='zi')v.zoom(.83);else if(a=='rs')v.reset();else v.auto=!v.auto}});
+function loop(){requestAnimationFrame(loop);[vc,vt].forEach(v=>{if(!v||!v.cv.clientWidth)return;const w=v.cv.clientWidth,h=v.cv.clientHeight;if(w!=v.w||h!=v.h){v.w=w;v.h=h;v.rn.setSize(w,h,false);v.cam.aspect=w/h;v.cam.updateProjectionMatrix()}
+ if(v.auto)v.g.quaternion.premultiply(new THREE.Quaternion().setFromAxisAngle(V3(0,0,1),.003));
+ const R=v.rn;R.setScissorTest(false);R.setViewport(0,0,w,h);R.clear();R.render(v.sc,v.cam);
+ v.gg.quaternion.copy(v.g.quaternion);v.gc.position.copy(v.cam.position).setLength(4.2);v.gc.lookAt(0,0,0);
+ R.setScissorTest(true);R.setScissor(8,8,84,84);R.setViewport(8,8,84,84);R.clearDepth();R.render(v.gs,v.gc)})}
+/* ---------- CUBE ---------- */
+const KEYS=[['xx','σxx'],['yy','σyy'],['zz','σzz'],['xy','σxy'],['yz','σyz'],['xz','σxz']];
+const MK=[['xx','xy','xz'],['xy','yy','yz'],['xz','yz','zz']];
+$('cin').innerHTML=MK.map((row,i)=>'<tr>'+row.map((k,j)=>`<td><input type="number" step="10" data-k="${k}" ${i>j?'readonly tabindex="-1"':''} title="${i>j?'Mirrors σ'+row[0].slice(0,0)+k+' (symmetry)':'Edit σ'+k}" aria-label="σ${k}"></td>`).join('')+'</tr>').join('');
+$('cin').oninput=e=>{if(e.target.readOnly)return;D[e.target.dataset.k]=parseFloat(e.target.value)||0;upAll()};
+const PRE={Tension:{xx:100},Compression:{xx:-100},'Pure shear':{xy:80},Biaxial:{xx:100,yy:60},Hydrostatic:{xx:-80,yy:-80,zz:-80},General:DEF};
+const DESC={Tension:'Uniaxial tension: only σxx ≠ 0.',Compression:'Uniaxial compression: σxx < 0, arrows point inward.','Pure shear':'Only σxy = σyx: tangential arrows in equal pairs.',Biaxial:'Tension in x and y, free in z.',Hydrostatic:'Equal compression on all faces, no shear.',General:'Full 3D state with all six components non-zero.','':'Custom state (edited manually).'};
+$('csel').innerHTML='<option value="">Custom</option>'+Object.keys(PRE).map(n=>`<option>${n}</option>`).join('');
+function preset(n){D={xx:0,yy:0,zz:0,xy:0,yz:0,xz:0,...PRE[n]};upAll()}
+$('csel').onchange=e=>{if(e.target.value)preset(e.target.value)};
+let PD={...D};
+function upCube(){document.querySelectorAll('#cin input').forEach(i=>{const k=i.dataset.k;if(document.activeElement!=i)i.value=D[k];if(PD[k]!==D[k]){i.classList.remove('fl');void i.offsetWidth;i.classList.add('fl')}});PD={...D};
+ const M=mat(),E=eig(M),p=tr(M)/3,vm=Math.sqrt(.5*((D.xx-D.yy)**2+(D.yy-D.zz)**2+(D.zz-D.xx)**2)+3*(D.xy**2+D.yz**2+D.xz**2));
+ const nm=Object.keys(PRE).find(n=>{const P={xx:0,yy:0,zz:0,xy:0,yz:0,xz:0,...PRE[n]};return KEYS.every(([k])=>P[k]===D[k])})||'';$('csel').value=nm;$('cdesc').textContent=DESC[nm];
+ ro('cro',[['σ1 (max principal)',f(E.l[0]),'MPa'],['n1',vec(E.v1)],['σ2',f(E.l[1]),'MPa'],['n2',vec(E.v2)],['σ3 (min principal)',f(E.l[2]),'MPa'],['n3',vec(E.v3)],['Mean stress p',f(p),'MPa'],['Von Mises σvm',f(vm),'MPa'],['Max shear (σ1−σ3)/2',f((E.l[0]-E.l[2])/2),'MPa']]);
+ eqs('ceq1',r`\sigma=\begin{bmatrix}${f(D.xx)}&${f(D.xy)}&${f(D.xz)}\\${f(D.xy)}&${f(D.yy)}&${f(D.yz)}\\${f(D.xz)}&${f(D.yz)}&${f(D.zz)}\end{bmatrix}\text{MPa}`);
+ eqs('ceq2',r`p=\tfrac13\,\mathrm{tr}\,\sigma=${f(p)},\quad \sigma_{vm}=\sqrt{\tfrac12\sum(\sigma_{ii}-\sigma_{jj})^2+3\sum\sigma_{ij}^2}=${f(vm)}`);
+ if(!vc)return;vc.clear();const m=Math.max(1e-9,...M.flat().map(Math.abs)),k=.6/m,sn=$('tn').checked,ss=$('ts').checked;
+ for(let a=0;a<3;a++)for(const s of[-1,1]){const o=V3(0,0,0);o.setComponent(a,.5*s);for(let i=0;i<3;i++){if(!(i==a?sn:ss))continue;const val=s*M[i][a],d=V3(0,0,0);d.setComponent(i,Math.sign(val));vc.add(i==a?arr(d,o,Math.abs(val)*k,0xe15b50,.15,.09):arr(d,o,Math.abs(val)*k,0x21a6ae,.1,.035))}}
+ if($('tpa').checked)[E.v1,E.v2,E.v3].forEach((v,i)=>{const q=V3(...v).multiplyScalar(.9);vc.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([q.clone().negate(),q]),new THREE.LineBasicMaterial({color:0xf2b84b})));vc.add(lab('n'+(i+1),'#f2b84b',q.clone().multiplyScalar(1.18),.3))})}
+['tn','ts','tpa'].forEach(i=>$(i).onchange=upCube);
+/* ---------- TRACTION ---------- */
+const nOf=()=>{const t=+$('th').value/R2D,p=+$('ph').value/R2D;return[Math.sin(t)*Math.cos(p),Math.sin(t)*Math.sin(p),Math.cos(t)]};
+$('tpre').innerHTML=[['n = x',90,0],['n = y',90,90],['n = z',0,0],['n = (1,1,1)/√3',54.74,45]].map(([l,a,b])=>`<button class="b" data-a="${a}" data-b="${b}" style="margin:0 3px 3px 0">${l}</button>`).join('');
+$('tpre').onclick=e=>{if(e.target.dataset.a){$('th').value=e.target.dataset.a;$('ph').value=e.target.dataset.b;upTrac()}};
+function upTrac(){$('thv').textContent=Math.round($('th').value*100)/100;$('phv').textContent=Math.round($('ph').value*100)/100;
+ const M=mat(),n=nrm(nOf()),t=mv(M,n),sn=dot(t,n),ts=t.map((x,i)=>x-sn*n[i]),tau=norm(ts);
+ ro('tout',[['n (unit)',vec(n)],['|n|',f(norm(n))],['t = σn',vec(t),'MPa'],['σnormal = t·n',f(sn),'MPa'],['ts = t − (t·n)n',vec(ts),'MPa'],['τ = ‖ts‖',f(tau),'MPa'],['σn² + τ²',f(sn*sn+tau*tau),'MPa²'],['|t|²',f(dot(t,t)),'MPa²']]);
+ eqs('teq',r`\sigma_n=${f(sn)},\ \ \tau=${f(tau)},\ \ \sigma_n^2+\tau^2=${f(sn*sn+tau*tau)}=\lVert\mathbf t\rVert^2`);
+ if(!vt)return;vt.clear();const fr=Math.sqrt(M.flat().reduce((s,x)=>s+x*x,0))||1,k=.9/fr,N=V3(...n);
+ const pl=new THREE.Mesh(new THREE.PlaneGeometry(1.1,1.1),new THREE.MeshBasicMaterial({color:0x6fa8d6,transparent:true,opacity:.3,side:THREE.DoubleSide,depthWrite:false})),q=new THREE.Quaternion().setFromUnitVectors(V3(0,0,1),N);
+ pl.quaternion.copy(q);const ed=new THREE.LineSegments(new THREE.EdgesGeometry(pl.geometry),new THREE.LineBasicMaterial({color:0x9ec3e0}));ed.quaternion.copy(q);vt.add(pl);vt.add(ed);
+ vt.add(arr(N,V3(0,0,0),.7,0xffffff));vt.add(arr(V3(...t),V3(0,0,0),norm(t)*k,0xf2b84b));vt.add(lab('n','#fff',N.clone().multiplyScalar(.85),.28));
+ vt.add(arr(N.clone().multiplyScalar(Math.sign(sn)),V3(0,0,0),Math.abs(sn)*k,0xe15b50,.15,.09));vt.add(arr(V3(...ts),V3(0,0,0),tau*k,0x21a6ae,.1,.035))}
+/* ---------- MOHR ---------- */
+const MD0={sx:80,sy:-20,t:40};let MD={...MD0};
+const A_=(x1,y1,x2,y2,o)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${o?'#21A6AE':'#E15B50'}" stroke-width="2.2" marker-end="url(#${o?'ao':'ah'})"/>`;
+const defs=`<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#E15B50"/></marker><marker id="ao" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L5 4L0 8" fill="none" stroke="#21A6AE" stroke-width="1.5"/></marker></defs>`;
+const mP=()=>{const{sx,sy,t}=MD,c=(sx+sy)/2,a=(sx-sy)/2,R=Math.hypot(a,t);return{c,a,R,s1:c+R,s2:c-R,tp:.5*Math.atan2(t,a)*R2D}};
+function upMohr(){['sx','sy','t'].forEach(k=>{const e=$('m'+k);if(document.activeElement!=e)e.value=MD[k]});
+ const{sx,sy,t}=MD,{c,a,R,s1,s2,tp}=mP(),th=+$('mth').value,rr=th/R2D,sn=c+a*Math.cos(2*rr)+t*Math.sin(2*rr),tn=-a*Math.sin(2*rr)+t*Math.cos(2*rr);$('mthv').textContent=th;
+ const m=Math.max(Math.abs(c)+R,10),k=125/m,X=s=>200+s*k,Y=s=>150+s*k;
+ let s=defs+`<line x1="10" y1="150" x2="390" y2="150" stroke="#9AA7B4"/><line x1="200" y1="10" x2="200" y2="290" stroke="#9AA7B4"/><text x="378" y="143">σ</text><text x="206" y="20">τ (↓ +)</text>`;
+ s+=`<circle cx="${X(c)}" cy="150" r="${R*k}" fill="#356F9F14" stroke="#356F9F" stroke-width="1.8"/><circle cx="${X(c)}" cy="150" r="2.5" fill="#202B36"/><text x="${X(c)+5}" y="164">C=${f(c)}</text>`;
+ s+=`<line x1="${X(sx)}" y1="${Y(t)}" x2="${X(sy)}" y2="${Y(-t)}" stroke="#7a8896" stroke-dasharray="4"/>`;
+ s+=`<line x1="${X(c)}" y1="150" x2="${X(sx)}" y2="${Y(t)}" stroke="#356F9F" stroke-dasharray="2 2"/><text x="${(X(c)+X(sx))/2+4}" y="${(150+Y(t))/2-4}" style="fill:#356F9F">R=${f(R)}</text>`;
+ s+=`<line x1="${X(c)}" y1="150" x2="${X(sn)}" y2="${Y(tn)}" stroke="#C7861A" stroke-width="2"/>`;
+ [[sx,t,'X'],[sy,-t,'Y']].forEach(([p,q,l])=>s+=`<rect x="${X(p)-4}" y="${Y(q)-4}" width="8" height="8" fill="#356F9F"/><text x="${X(p)+7}" y="${Y(q)-6}">${l}</text>`);
+ s+=`<circle cx="${X(sn)}" cy="${Y(tn)}" r="6" fill="#C7861A" stroke="#fff"/><text x="${X(sn)+9}" y="${Y(tn)+16}" style="fill:#9A6710">(σx′, τx′y′)</text>`;
+ [[s1,'σ1'],[s2,'σ2']].forEach(([p,l])=>s+=`<circle cx="${X(p)}" cy="150" r="4" fill="#2E8B57"/><text x="${X(p)-12}" y="138" style="fill:#2E8B57">${l}=${f(p)}</text>`);
+ s+=`<path d="M${X(c)-4} ${Y(R)}l4 -4 4 4-4 4z" fill="#21A6AE"/><text x="${X(c)+8}" y="${Y(R)+14}" style="fill:#178087">τmax=${f(R)}</text>`;
+ s+=`<g transform="translate(55 245)"><rect x="-26" y="-26" width="52" height="52" fill="none" stroke="#9AA7B4" stroke-dasharray="3"/><g transform="rotate(${-th})"><rect x="-26" y="-26" width="52" height="52" fill="#356F9F22" stroke="#356F9F"/>${A_(26,0,52,0)}<text x="42" y="-6">x′</text></g></g>`;
+ $('msvg').innerHTML=s;
+ ro('mout',[['Centre c = (σx+σy)/2',f(c),'MPa'],['Radius R = √(a²+τxy²)',f(R),'MPa'],['σ1 = c + R',f(s1),'MPa'],['σ2 = c − R',f(s2),'MPa'],['τmax (in-plane) = R',f(R),'MPa'],['θp = ½ atan2(τxy, a)',f(tp),'°'],['σx′ at θ',f(sn),'MPa'],['τx′y′ at θ',f(tn),'MPa'],['σy′ at θ',f(2*c-sn),'MPa'],['σx′+σy′ (invariant)',f(2*c),'MPa']]);
+ eqs('meq',r`\theta=${th}^\circ:\ \ \sigma_{x'}=${f(sn)},\ \ \tau_{x'y'}=${f(tn)}`);
+ $('mexp').innerHTML=`Physical rotation θ = ${th}° moves the point <b>2θ = ${2*th}°</b> counter-clockwise around C. A 90° physical turn is a 180° turn on the circle (X → Y, a diameter).`}
+['sx','sy','t'].forEach(k=>$('m'+k).oninput=e=>{MD[k]=parseFloat(e.target.value)||0;upMohr()});$('mth').oninput=upMohr;
+$('msync').onclick=()=>{MD={sx:D.xx,sy:D.yy,t:D.xy};upMohr()};
+/* ---------- LECTURES ---------- */
+const W=s=>`<svg viewBox="0 0 240 150" width="100%" style="max-width:380px;background:#F3F5F7;border:1px solid #D7DEE5">${defs}${s}</svg>`,T=(x,y,t)=>`<text x="${x}" y="${y}">${t}</text>`;
+const R_='fill="none" stroke="#7a8896"',el=`<rect x="90" y="45" width="60" height="60" ${R_}/>`;
+const shr=`${A_(95,48,145,48,1)}${A_(145,102,95,102,1)}${A_(152,95,152,55,1)}${A_(88,55,88,95,1)}`;
+let RA=30;
+const L=[
+{t:'Vectors and Tensors',lab:'cube',p:'A vector has magnitude and direction; a second-order tensor maps vectors to vectors, <b>b = T a</b>. Index notation uses the summation convention. Stress is a tensor because it maps a plane normal to a traction vector.',i:'Physical quantities do not depend on the coordinate system; only their components do.',eq:[r`\mathbf a\cdot\mathbf b=a_ib_i=|\mathbf a||\mathbf b|\cos\theta`,r`(\mathbf a\times\mathbf b)_i=\varepsilon_{ijk}a_jb_k`,r`b_i=T_{ij}a_j`],dg:()=>W(A_(30,120,150,40)+A_(30,120,210,100,1)+T(155,38,'u')+T(212,98,'v')),
+ ex:()=>{const u=[1,2,3],v=[4,-1,2];return`u=(1,2,3), v=(4,−1,2)<br>u·v = ${dot(u,v)}, u×v = (${cross(u,v)}), |u| = ${f(norm(u))}<br>σ·u (current σ) = (${mv(mat(),u).map(f)})`}},
+{t:'Traction Vector',lab:'trac',p:'Traction t(n) is the force per unit area on a plane with outward normal n. It splits into a normal part σₙ and a shear part τ in the plane. Cauchy: t = σ n.',i:'Different planes through the same point carry different tractions: stress is a state, not one number.',eq:[r`\mathbf t=\lim_{\Delta A\to0}\frac{\Delta\mathbf F}{\Delta A}=\sigma\mathbf n`,r`\sigma_n=\mathbf t\cdot\mathbf n,\quad\tau=\lVert\mathbf t-\sigma_n\mathbf n\rVert`],dg:()=>W(`<rect x="50" y="30" width="110" height="90" ${R_}/><line x1="60" y1="120" x2="160" y2="40" stroke="#356F9F" stroke-width="3"/>${A_(110,80,135,111)}${A_(110,80,175,95,1)}${T(138,120,'n')}${T(178,96,'t')}`),
+ ex:()=>{const n=nrm([1,1,1]),t=mv(mat(),n),sn=dot(t,n);return`n=(1,1,1)/√3<br>t = (${t.map(f)})<br>σₙ = ${f(sn)}, τ = ${f(Math.sqrt(Math.max(0,dot(t,t)-sn*sn)))}`}},
+{t:'Stress Tensor and Matrix',lab:'cube',p:'The stress matrix has nine components. With t = σn, row i gives a traction component and column j corresponds to the plane normal. Diagonal terms are normal stresses; off-diagonal terms are shear. Tension is positive.',i:'With t = σn, the first index gives the traction component and the second index identifies the plane-normal direction.',eq:[r`\sigma=[\sigma_{ij}]_{3\times3}`,r`\mathbf t(\mathbf e_j)=\sigma_{ij}\mathbf e_i`],dg:()=>W(el+A_(150,75,195,75)+A_(90,75,45,75)+A_(120,45,120,10)+A_(120,105,120,140)+T(198,70,'σxx')+T(125,12,'σyy')),
+ ex:()=>mtx(mat())+`tr σ = ${f(tr(mat()))}; t on +x face = (${[D.xx,D.xy,D.xz].map(f)})`},
+{t:'Stress Transformation',lab:'cube',p:'Components change with the axes, but the tensor does not. With rotation matrix Q (rows = new axes): σ′ = Q σ Qᵀ. Invariants such as the trace stay fixed. Use the slider to rotate the axes about z.',i:'Same physical stress, different numbers: the principal values and trace do not move.',eq:[r`\sigma'_{ij}=Q_{ik}Q_{jl}\sigma_{kl}`,r`\sigma'=Q\,\sigma\,Q^{T}`],dg:()=>W(A_(90,120,180,120)+A_(90,120,90,30)+A_(90,120,168,75,1)+A_(90,120,45,42,1)+T(182,124,'x')+T(94,28,'y')+T(165,68,'x′')+T(35,40,'y′')),
+ ex:()=>{const a=RA/R2D,c=Math.cos(a),s=Math.sin(a),Q=[[c,s,0],[-s,c,0],[0,0,1]],M=mat(),S2=mm(mm(Q,M),tp(Q));return`<div class="cmp"><div><small>σ in (x, y, z)</small>${mtx(M)}</div><div><small>σ′ in rotated axes, θ = ${RA}°</small>${mtx(S2)}</div></div>trace: ${f(tr(M))} → ${f(tr(S2))}<br>principal: ${eig(M).l.map(f)} → ${eig(S2).l.map(f)}<br><span class="ok">Same physical tensor; only the components changed.</span>`}},
+{t:'Balance of Linear Momentum',p:'Newton\'s second law for a continuum gives Cauchy\'s equation of motion. At equilibrium the stress divergence balances body force.',i:'Stress gradients balance body forces: a hanging bar carries more load near the support.',eq:[r`\frac{\partial\sigma_{ij}}{\partial x_i}+b_j=\rho a_j`,r`\text{Equilibrium: }\nabla\cdot\sigma+\mathbf b=\mathbf 0`],dg:()=>W(`<rect x="80" y="45" width="80" height="60" ${R_}/>${A_(80,75,40,75)}${A_(160,75,205,75)}${A_(120,75,120,120,1)}${T(30,68,'σ')}${T(170,68,'σ+dσ')}${T(124,118,'ρg')}`),
+ ex:()=>{const rho=7850,g=9.81,Lh=2;return`Hanging steel bar: dσ/dx = ρg ⇒ σ(L)=ρgL<br>ρ=${rho}, g=${g}, L=${Lh} m ⇒ σmax = ${f(rho*g*Lh/1e6)} MPa`}},
+{t:'Balance of Angular Momentum',lab:'cube',p:'Moment balance on an infinitesimal element (no body couples) forces σ<sub>ij</sub> = σ<sub>ji</sub>, leaving 6 independent components. Shear stresses always occur in equal pairs.',i:'Symmetry means only six numbers describe the stress state.',eq:[r`\varepsilon_{ijk}\sigma_{jk}=0`,r`\sigma=\sigma^{T}`],dg:()=>W(el+shr+T(98,40,'τxy')),
+ ex:()=>{const M=mat(),S2=M.map((r,i)=>r.map((x,j)=>x-M[j][i]));return`Skew part ‖σ−σᵀ‖ = ${f(Math.sqrt(S2.flat().reduce((s,x)=>s+x*x,0)))}<br>Moment about z per volume: (σxy−σyx) = ${f(M[0][1]-M[1][0])}`}},
+{t:'Principal Stresses',lab:'cube',p:'Planes with zero shear have normals that are eigenvectors of σ; the eigenvalues are principal stresses, roots of the characteristic cubic. Enable "Principal axes" in the cube lab to see them.',i:'On principal planes the traction is purely normal: no shear.',eq:[r`\sigma\mathbf n=\lambda\mathbf n`,r`\lambda^3-I_1\lambda^2+I_2\lambda-I_3=0`],dg:()=>W(`<g transform="rotate(-30 120 75)"><rect x="90" y="45" width="60" height="60" ${R_}/>${A_(150,75,200,75)}${A_(90,75,40,75)}</g>${T(195,110,'σ1')}${T(30,60,'σ1')}`),
+ ex:()=>{const E=eig(mat());return`σ1 ≥ σ2 ≥ σ3 = ${E.l.map(f).join(', ')}<br>n1 = (${E.v1.map(f)})<br>check σn1·n1 = ${f(dot(mv(mat(),E.v1),E.v1))}`}},
+{t:'Maximum Shear Stress',p:'The largest shear is half the difference of extreme principal stresses and acts on planes at 45° to n1 and n3, where the normal stress is the average (σ1+σ3)/2.',i:'Ductile yielding is governed by shear; τmax sits 45° from the principal planes.',eq:[r`\tau_{max}=\frac{\sigma_1-\sigma_3}{2}`,r`\mathbf n=\frac{\mathbf n_1\pm\mathbf n_3}{\sqrt2}`],dg:()=>W(`<g transform="rotate(-45 120 75)">${el}${shr}</g>`+T(160,20,'τmax at 45°')),
+ ex:()=>{const E=eig(mat()),n=nrm(E.v1.map((x,i)=>x+E.v3[i])),t=mv(mat(),n),sn=dot(t,n);return`τmax = (σ1−σ3)/2 = ${f((E.l[0]-E.l[2])/2)}<br>direct check on n=(n1+n3)/√2: τ = ${f(Math.sqrt(Math.max(0,dot(t,t)-sn*sn)))}, σₙ = ${f(sn)}`}},
+{t:'Mohr\'s Circle',lab:'mohr',p:'The (σ, τ) pairs on all planes about one principal axis lie on a circle. In 3D there are three circles; the largest has diameter σ1−σ3. Plane rotation θ ↔ 2θ on the circle.',i:'One point on the circle is one plane; turning the plane by θ turns the point by 2θ.',eq:[r`(\sigma-c)^2+\tau^2=R^2`,r`c=\frac{\sigma_x+\sigma_y}{2},\quad R=\sqrt{a^2+\tau_{xy}^2}`],dg:()=>W(`<line x1="20" y1="75" x2="220" y2="75" stroke="#9AA7B4"/><circle cx="120" cy="75" r="50" fill="none" stroke="#356F9F" stroke-width="2"/><circle cx="70" cy="75" r="4" fill="#2E8B57"/><circle cx="170" cy="75" r="4" fill="#2E8B57"/><circle cx="150" cy="110" r="5" fill="#356F9F"/><circle cx="90" cy="40" r="5" fill="#356F9F"/>${T(40,70,'σ2')}${T(176,70,'σ1')}${T(155,118,'X')}${T(95,36,'Y')}`),
+ ex:()=>{const E=eig(mat()),[a,b,c]=E.l;return`Radii: (σ1−σ2)/2 = ${f((a-b)/2)}, (σ2−σ3)/2 = ${f((b-c)/2)}, (σ1−σ3)/2 = ${f((a-c)/2)}`}},
+{t:'Stress Invariants and Decomposition',p:'Invariants are unchanged by rotation. Split σ = p I + s: hydrostatic part (volume change) plus deviatoric part (shape change); s is traceless.',i:'Pressure changes volume; the deviator changes shape, and yielding depends on the deviator.',eq:[r`I_1=\mathrm{tr}\,\sigma,\ I_2=\tfrac12[(\mathrm{tr}\,\sigma)^2-\mathrm{tr}\,\sigma^2],\ I_3=\det\sigma`,r`\sigma=pI+s,\quad p=I_1/3`,r`J_2=\tfrac12 s:s,\quad\sigma_{vm}=\sqrt{3J_2}`],dg:()=>W(`<rect x="10" y="50" width="50" height="50" ${R_}/><rect x="95" y="50" width="50" height="50" ${R_}/><rect x="180" y="50" width="50" height="50" ${R_}/>${T(30,80,'σ')}${T(70,80,'=')}${T(112,80,'p I')}${T(155,80,'+')}${T(200,80,'s')}`),
+ ex:()=>{const M=mat(),p=tr(M)/3,s=M.map((r,i)=>r.map((x,j)=>x-(i==j?p:0))),pI=[[p,0,0],[0,p,0],[0,0,p]],I1=tr(M),I2=.5*(I1*I1-tr(mm(M,M))),J2=.5*s.flat().reduce((a,x)=>a+x*x,0);return`I1 = ${f(I1)}, I2 = ${f(I2)}, I3 = ${f(det(M))}<br>J2 = ${f(J2)}, σvm = ${f(Math.sqrt(3*J2))}<div class="cmp"><div><small>hydrostatic pI (p=${f(p)})</small>${mtx(pI)}</div><div><small>deviatoric s (tr s=${f(tr(s))})</small>${mtx(s)}</div></div>`}}];
+let li=0,cur='dash';const seen=new Set(),REC=[];
+function upLecEx(){if(cur=='lec'&&$('lex'))$('lex').innerHTML=L[li].ex()}
+function upLec(){const l=L[li];$('lh').innerHTML=`<small>Learning module · Lecture ${li+1} of 10</small><h1>${l.t}</h1><p>${l.p.split('. ')[0].replace(/\.$/,'')}.</p>`;
+ $('lbody').innerHTML=`<div class="lab"><div class="col"><div class="pn"><h3>Concept overview</h3><div class="pb">${l.p}</div></div><div class="pn"><h3>Mathematical formulation</h3>${l.eq.map(e=>`<div class="eq">${tx(e)}</div>`).join('')}<div style="height:6px"></div></div><div class="pn"><h3>Physical interpretation</h3><div class="pb">${l.i}</div></div></div>
+ <div class="side"><div class="pn"><h3>Diagram</h3><div class="pb">${l.dg()}</div></div>${li==3?`<div class="pn"><h3>Experiment: rotate axes about z</h3><div class="pb"><label>θ <b id="rav" style="font-family:var(--mono)">${RA}</b>°</label><input type="range" id="ra" min="-90" max="90" value="${RA}"></div></div>`:''}
+ <div class="pn"><h3>Worked example (live from cube stress state)</h3><div class="pb val" id="lex"></div></div>
+ <div class="pn"><h3>Try it</h3><div class="pb">${l.lab?`<button class="b p" data-go="${l.lab}">Open experiment</button> `:''}<button class="b" data-go="chal">Practice question</button></div></div></div></div>`;
+ if(li==3)$('ra').oninput=e=>{RA=+e.target.value;$('rav').textContent=RA;upLecEx()};upLecEx()}
+/* ---------- CHALLENGES ---------- */
+let Q,sc=[0,0];const ri=(a,b)=>Math.round(a+Math.random()*(b-a));
+function newQ(){const sx=ri(-10,12)*10,sy=ri(-10,12)*10,t=ri(-6,6)*10,th=ri(1,8)*10,c=(sx+sy)/2,a=(sx-sy)/2,R=Math.hypot(a,t),rr=th/R2D,type=ri(0,3),h=`State: σx=${sx}, σy=${sy}, τxy=${t} MPa. `;
+ const qs=[[h+'Find the larger principal stress σ1.',c+R,`σ1 = c + R = ${f(c)} + ${f(R)}`],[h+'Find the maximum in-plane shear stress.',R,`R = √(${f(a)}² + ${t}²)`],[h+`Find σx′ on a plane rotated θ=${th}° CCW.`,c+a*Math.cos(2*rr)+t*Math.sin(2*rr),`σx′ = c + a cos2θ + τxy sin2θ`],[h+`Find τx′y′ for θ=${th}° CCW.`,-a*Math.sin(2*rr)+t*Math.cos(2*rr),`τx′y′ = −a sin2θ + τxy cos2θ`]];
+ Q=qs[type];$('qtxt').textContent=Q[0];$('qin').value='';$('qres').textContent=''}
+$('qnew').onclick=newQ;$('qshow').onclick=()=>$('qres').innerHTML=`${Q[2]} ⇒ answer = ${f(Q[1])} MPa`;
+$('qchk').onclick=()=>{const v=parseFloat($('qin').value);if(isNaN(v))return;const ok=Math.abs(v-Q[1])<=Math.max(.5,Math.abs(Q[1])*.01);sc[1]++;if(ok)sc[0]++;$('sc').textContent=sc.join('/');$('qres').innerHTML=ok?'<span class="ok">Correct.</span>':'Not quite. Try again or show the solution.'};
+/* ---------- GUIDED / CHALLENGE MODES ---------- */
+const G={cube:[['Uniaxial tension: only σxx ≠ 0; the x-face arrows point outward.',()=>preset('Tension')],['Pure shear: tangential arrows appear in equal symmetric pairs (σxy = σyx).',()=>preset('Pure shear')],['Hydrostatic compression: all arrows point inward, no shear.',()=>preset('Hydrostatic')],['Now type your own values into the matrix.',()=>preset('General')]],
+ trac:[['Make n = x: the traction is the first row of σ.',()=>{$('th').value=90;$('ph').value=0;upTrac()}],['Tilt n to (1,1,1)/√3 and watch σₙ and τ split t.',()=>{$('th').value=54.74;$('ph').value=45;upTrac()}],['Sweep φ; τ changes while σₙ²+τ² stays |t|².',()=>{$('ph').value=120;upTrac()}]],
+ mohr:[['θ = 0 puts the point at X(σx, τxy).',()=>{$('mth').value=0;upMohr()}],['Rotate to θp: the point lands on the σ axis (τ = 0, principal).',()=>{$('mth').value=Math.round(mP().tp);upMohr()}],['θp + 45° moves the point to the top of the circle: τ = R.',()=>{$('mth').value=Math.max(-90,Math.min(90,Math.round(mP().tp+45)));upMohr()}]]};
+const C={cube:['For σxx = −100 MPa alone, do the x-face arrows point outward or inward?','Inward: compression is negative, so the arrows push into the cube and no shear arrows appear.',()=>preset('Compression')],
+ trac:['With n = x, which part of σ is the traction?','The first column (σxx, σyx, σzx): t = σ·e1. Since the stress matrix is symmetric, this column equals the first row in this model.',()=>{$('th').value=90;$('ph').value=0;upTrac()}],
+ mohr:['At what plane rotation does the shear stress τx′y′ vanish?','At θp = ½·atan2(τxy, a); the point sits on the σ axis and σx′ equals a principal stress.',()=>{$('mth').value=Math.round(mP().tp);upMohr()}]};
+const gi={cube:0,trac:0,mohr:0};
+function guide(p){const g=G[p],e=document.querySelector('#'+p+' .gd'),i=gi[p]%g.length;e.innerHTML=`<b>Guided ${i+1}/${g.length}.</b> ${g[i][0]} <button class="b p">Apply step</button>`;e.querySelector('button').onclick=()=>{g[i][1]();gi[p]++;guide(p)}}
+function chq(p){const c=C[p],e=document.querySelector('#'+p+' .ch');e.innerHTML=`<b>Predict first.</b> ${c[0]} <button class="b p">Run experiment</button><div class="ans"></div>`;e.querySelector('button').onclick=()=>{c[2]();e.querySelector('.ans').textContent='Explanation: '+c[1]}}
+function setMode(m){document.body.dataset.mode=m;document.querySelectorAll('#seg button').forEach(b=>b.classList.toggle('on',b.dataset.m==m));Object.keys(G).forEach(p=>{guide(p);chq(p)})}
+$('seg').onclick=e=>{if(e.target.dataset.m)setMode(e.target.dataset.m)};
+/* ---------- NAV / DASHBOARD ---------- */
+const IC={dash:'M3 3h7v7H3zM14 3h7v4h-7zM14 11h7v10h-7zM3 14h7v7H3z',cube:'M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5',trac:'M3 15l9-5 9 5-9 5zM12 10V3',mohr:'M3 12h18M12 4v16M16 12a4 4 0 11-8 0 4 4 0 018 0z',chal:'M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2zM9 8h6M9 12h6',about:'M12 3a9 9 0 100 18 9 9 0 000-18zM12 11v5M12 7h.01'};
+const ic=p=>`<svg class="ic" viewBox="0 0 24 24"><path d="${p}"/></svg>`;
+const PAGES={dash:['Workspace','Dashboard'],cube:['Virtual Lab','Stress Cube'],trac:['Virtual Lab','Traction Explorer'],mohr:['Virtual Lab','Mohr\'s Circle'],lec:['Learning Modules',''],chal:['Practice','Challenges'],about:['Project','About MOS Project 401']};
+const NB=(p,l,txt,x='')=>`<button data-go="${p}" ${l!=null?`data-l="${l}"`:''}>${x}${txt}</button>`;
+function nav(){$('nav').innerHTML=`<div class="ng">Workspace</div>${NB('dash',null,'Dashboard',ic(IC.dash))}<div class="ng">Virtual lab</div>${NB('cube',null,'Stress Cube',ic(IC.cube))}${NB('trac',null,'Traction Explorer',ic(IC.trac))}${NB('mohr',null,'Mohr\'s Circle',ic(IC.mohr))}<div class="ng">Learning modules</div>`+L.map((l,i)=>NB('lec',i,`<em>${String(i+1).padStart(2,'0')}</em>${l.t}<span class="dt ${seen.has(i)?'y':''}" title="${seen.has(i)?'Visited':'Not visited'}"></span>`)).join('')+`<div class="ng">Practice</div>${NB('chal',null,'Challenges',ic(IC.chal))}<div class="ng">Project</div>${NB('about',null,'About project',ic(IC.about))}`;
+ document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.go==cur&&(cur!='lec'||+b.dataset.l==li)))}
+function go(p,l){cur=p;if(p=='lec'){if(l!=null)li=l;seen.add(li)}
+ const lbl=p=='lec'?`Lecture ${li+1}: ${L[li].t}`:PAGES[p][1];if(p!='dash'&&p!='chal'||p=='chal'){const k=p+(p=='lec'?li:'');const i=REC.findIndex(x=>x.k==k);if(i>=0)REC.splice(i,1);REC.unshift({k,p,l:p=='lec'?li:null,t:lbl});REC.length=Math.min(REC.length,5)}
+ document.querySelectorAll('main>section').forEach(s=>s.classList.toggle('on',s.id==p));
+ $('bc').innerHTML=`MOS Project 401 / ${PAGES[p][0]} / <b>${lbl}</b>`;$('reset').style.display=(p=='dash'||p=='about')?'none':'';document.body.classList.remove('no');
+ nav();if(p=='dash')dash();upAll();window.scrollTo(0,0)}
+function dash(){const nx=L.findIndex((_,i)=>!seen.has(i)),done=seen.size,fe=[['cube','Stress cube','Edit all six components and watch arrows update.'],['trac','Traction explorer','Tilt a plane and split t into normal and shear.'],['mohr','Mohr\'s circle','Rotate a plane and follow the 2θ point.']];
+ $('dash').innerHTML=`<div class="hd"><small>Laboratory overview</small><h1>MOS Project 401</h1><p>Interactive Mechanics of Solids learning project for ME2110, covering ten selected topics. Explore stress states, traction on inclined planes and Mohr's circle through live visualizations.</p><p class="dash-credit">Course: <strong>Mechanics of Solids (ME2110)</strong> · Faculty: <strong>Prakhar Gupta</strong><br>Project by <strong>Arnav Jaiswal</strong> and <strong>Arvind</strong>.</p></div>
+ <div class="lab"><div class="col"><div class="pn"><h3>Continue learning</h3><div class="pb">${nx<0?'All ten modules visited. Review any lecture or attempt a challenge.':`Next: Lecture ${nx+1}, ${L[nx].t}`} <button class="b p" data-go="lec" data-l="${nx<0?0:nx}" style="margin-left:8px">${done?'Continue':'Start'}</button></div></div>
+ <div class="pn"><h3>Learning modules</h3><div class="mg">${L.map((l,i)=>`<button data-go="lec" data-l="${i}"><em>${String(i+1).padStart(2,'0')}</em><span>${l.t}</span><span class="dt" style="margin-left:auto;font-size:11px;color:${seen.has(i)?'#2E8B57':'#657381'}">${seen.has(i)?'Visited':''}</span></button>`).join('')}</div></div></div>
+ <div class="side"><div class="pn"><h3>Learning progress</h3><div class="pb"><div class="bar"><i style="width:${done*10}%"></i></div><span style="font-family:var(--mono)">${done}/10</span> modules visited · challenge score <span style="font-family:var(--mono)">${sc.join('/')}</span></div></div>
+ <div class="pn"><h3>Project team</h3><div class="pb"><b>Arnav Jaiswal &amp; Arvind</b><p class="d">Interactive Mechanics of Solids project · Ten learning modules</p><button class="b" data-go="about">Project details</button></div></div><div class="pn"><h3>Featured experiments</h3>${fe.map(x=>`<div class="r"><span><b style="font:600 12px Inter;color:var(--t)">${x[1]}</b><br>${x[2]}</span><button class="b" data-go="${x[0]}">Open</button></div>`).join('')}</div>
+ <div class="pn"><h3>Recently used</h3>${REC.length?REC.map(x=>`<div class="r"><span>${x.t}</span><button class="b" data-go="${x.p}" ${x.l!=null?`data-l="${x.l}"`:''}>Open</button></div>`).join(''):'<div class="pb d">Nothing yet. Open an experiment to begin.</div>'}</div></div></div>`}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go,g.dataset.l!=null?+g.dataset.l:null)});
+$('mb').onclick=()=>document.body.classList.toggle('no');
+$('help').onclick=()=>toast('Drag to rotate, shift+drag to pan, wheel to zoom. Edit matrix cells or move sliders; results update live.');
+$('set').onclick=()=>{AUTO=!AUTO;[vc,vt].forEach(v=>v&&(v.auto=AUTO));$('sett').textContent='Settings · auto-rotate '+(AUTO?'on':'off')};
+/* ---------- RESET ---------- */
+const snap=()=>JSON.stringify({D,MD,th:$('th').value,ph:$('ph').value,mth:$('mth').value,RA});
+function restore(s){const o=JSON.parse(s);D=o.D;MD=o.MD;$('th').value=o.th;$('ph').value=o.ph;$('mth').value=o.mth;RA=o.RA;upAll()}
+$('reset').onclick=()=>{const s=snap();D={...DEF};MD={...MD0};$('th').value=55;$('ph').value=40;$('mth').value=0;RA=30;sc=[0,0];$('sc').textContent='0/0';Object.keys(gi).forEach(k=>gi[k]=0);[vc,vt].forEach(v=>v&&v.reset());setMode(document.body.dataset.mode);newQ();upAll();toast('Experiment reset to defaults.',()=>restore(s))};
+function upAll(){upCube();upTrac();upMohr();if(cur=='lec')upLec();$('st').textContent='σ = σᵀ · tr σ = '+f(tr(mat()))+' MPa'}
+document.querySelectorAll('[data-t]').forEach(e=>e.innerHTML=tx(e.dataset.t));
+$('th').oninput=$('ph').oninput=upTrac;
+vc=mk('cv1');vt=mk('cv2');newQ();setMode('explore');go('dash');loop();
+</script></body></html>
